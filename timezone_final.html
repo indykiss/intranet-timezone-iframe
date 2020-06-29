@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Zone</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+      .card{
+        border: none !important;
+      }
+      .card-text{
+        font-size: 20px;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+      .card-title {
+        font-size: 18px;
+        font-weight: 300;
+        color: #7f7f7f;
+      }
+    </style>
+</head>
+<body>
+
+    <div class="row mt-3 ml-2">
+        <div class="col-sm-2">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-text"> <b id="sf"></b> </p>
+              <h5 class="card-title"> <b>San Francisco</b></h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-text"> <b id="ny"></b> </p>
+              <h5 class="card-title"> <b>New York</b> </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-text"> <b id="london"></b> </p>
+                <h5 class="card-title"> <b>London</b></h5>
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-text"> <b id="hk"></b> </p>
+                <h5 class="card-title"> <b>Hong Kong/ Singapore</b> </h5>
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-text"> <b id="seoul"></b> </p>
+                <h5 class="card-title"> <b>Seoul</b> </h5>
+              </div>
+            </div>
+        </div>
+      </div>
+    <script>
+      function time(){
+      /**
+       * Shift any Date timezone.
+       * @param {Date} date - Date to update.
+       * @param {string} timezone - Timezone as `-03:00`.
+       */
+      function timezoneShifter(date, timezone) {
+          let isBehindGTM = false;
+          if (timezone.startsWith("-")) {
+            timezone = timezone.substr(1);
+            isBehindGTM = true;
+          }
+        
+          const [hDiff, mDiff] = timezone.split(":").map((t) => parseInt(t));
+          const diff = hDiff * 60 + mDiff * (isBehindGTM ? 1 : -1);
+          const currentDiff = new Date().getTimezoneOffset();
+        
+          return new Date(date.valueOf() + (currentDiff - diff) * 60 * 1000);
+        }
+        const _now = new Date()
+
+
+        let sanFranciscoTime = timezoneShifter(_now, "-07:00").toLocaleString();
+        let newYorkTime = timezoneShifter(_now, "-04:00").toLocaleString();
+        let londonTime = timezoneShifter(_now, "+00:60").toLocaleString();
+        let hongKong = timezoneShifter(_now, "+16:00").toLocaleString();
+        let seoul = timezoneShifter(_now, "+15:00").toLocaleString();
+
+        function timeToDisplay(string) {
+          const splitted = string.split(" ");
+          const time = splitted[1].slice(0,-3) + " " + splitted[2].toLowerCase();
+          return time;
+        }
+
+        document.getElementById('sf').innerHTML = `${timeToDisplay(sanFranciscoTime)}`;
+        document.getElementById('ny').innerHTML = `${timeToDisplay(newYorkTime)}`;
+        document.getElementById('london').innerHTML = `${timeToDisplay(londonTime)}`;
+        document.getElementById('hk').innerHTML = `${timeToDisplay(hongKong)}`;
+        document.getElementById('seoul').innerHTML = `${timeToDisplay(seoul)}`;
+
+      setTimeout(time, 1000);
+      }
+      time();
+    </script>
+</body>
+</html>
