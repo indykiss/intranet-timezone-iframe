@@ -87,6 +87,7 @@
         const _now = new Date()
 
 
+        // Update these 3 lines for daylight savings
         let sanFranciscoTime = timezoneShifter(_now, "-08:00").toLocaleString();
         let newYorkTime = timezoneShifter(_now, "-05:00").toLocaleString();
         let londonTime = timezoneShifter(_now, "+00:00").toLocaleString();
